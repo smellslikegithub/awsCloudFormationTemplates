@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Changing the Key identifier for the EC2 instance"
+Resources:
+  MyEC2Instance: 
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: "ami-016b213e65284e9c9"
+      InstanceType: t2.micro
+      KeyName: cfn-key2
+
+
