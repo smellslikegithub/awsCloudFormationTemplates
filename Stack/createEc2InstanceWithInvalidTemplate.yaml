@@ -1,0 +1,19 @@
+# Note that by ivalid template, what I mean is syntactically, it will be correct, but logically it will have a mistake. 
+
+# For this example, I will be trying to assign a Key to my instance for which no resource ws made. In other words, the key does not exist in my AWS.
+
+# The template will be gladly accepted by AWS cloud fromation, and as it is syntactically correct, one will never find out that there was indeed an issue with the template. 
+
+# However, during the instance creation, the console will log that there was an error creating the resource and it will perform a roll back to as-was state. The logs can then be read to further figure out what went wrong
+
+#--------------------------------------------------------------------
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Creating a template based on an edge case scenario"
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: "ami-016b213e65284e9c9"
+      InstanceType: "t2.micro" 
+      KeyName: "cfn-key10" # This is the resource-level issue.

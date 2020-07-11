@@ -1,0 +1,13 @@
+# Resources are key components of a STACK
+
+# Resources is a REQUIRED SECTION and needs to be defined for the STACK to work properly in the cloud formation.
+
+# The general resource pattern/template looks like this :
+
+Resources:
+    # This can be a logical name like "MyEC2Instace" or "EC2" etc
+    Logical ID:
+        Type: Resource Type 
+        Properties: # Set of properties for the Resource
+
+# Resources can reference other resources using "Intrinsic Function Ref". One example could be adding a "Security Group to the EC2 instance"

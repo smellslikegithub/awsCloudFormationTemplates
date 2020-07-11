@@ -1,0 +1,33 @@
+# We will create additionla security groups for this template
+# For securtity gropus, always rememeber, you have inbound and outbound rules.
+# By default, outbound rules are set top "All-open" in any SG
+
+# In terms of resources and properties 
+  # OUTBOUND == agress
+  # INBOUND == Ingress
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creating aditional security groups
+
+Resources:
+  DevEC2Instance: # This is teh first resource
+    Type: "AWS::EC2::Instance"
+    Properties:
+        ImageId: ami-016b213e65284e9c9
+        InstanceType: t2.micro
+        KeyName: cfn-key1
+        SecurityGroups:
+          - default # The dash indicates a list
+          - !Ref SSHSecurityGroup # Note this logicalID is defined beneath
+
+  SSHSecurityGroup: # This is the second resource group
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows SSH connection towards the EC2
+      SecurityGroupIngress: 
+        - IpProtocol: tcp # this is a list, beacuse, I can add more protocols later.
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+
+
