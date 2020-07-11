@@ -3,6 +3,7 @@ Description: "Creating an EC2 Instance with new instance type and key"
 Resources:
   MyEC2Instance:
     Properties:
+      ImageId: "ami-016b213e65284e9c9"
       Type: t2.small  # Note, this is not within the free tier
       KeyName: cfn-key1
 
