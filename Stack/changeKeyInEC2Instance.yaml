@@ -6,6 +6,6 @@ Resources:
     Properties: 
       ImageId: "ami-016b213e65284e9c9"
       InstanceType: t2.micro
-      KeyName: cfn-key2
+      KeyName: cfn-key1
 
 
