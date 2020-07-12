@@ -10,7 +10,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Creating aditional security groups
 
 Resources:
-  DevEC2Instance: # This is teh first resource
+  DevEC2Instance: # This is the first resource
     Type: "AWS::EC2::Instance"
     Properties:
         ImageId: ami-016b213e65284e9c9

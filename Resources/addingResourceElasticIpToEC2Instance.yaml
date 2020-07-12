@@ -1,0 +1,49 @@
+# Note that, All the immediate child elements under resources like 
+# DEVEC2Instance, SSHSecurityGroup and MyElasticIp are resources.
+# Some can have a logical id that will be used to refer to that resource.
+# For example, the DevEC2Instance is simply a logical ID that represents
+# the Type of resource which is EC2
+# -----------------------------------------------------------------------
+# MyElasticIp will be used to attach an Elastic Ip to DevEC2Instance.
+AWSTemplateFormatVersion: 2010-09-09
+Description: Adding additionla rules to our security group
+Resources:
+  DevEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-016b213e65284e9c9
+      InstanceType: t2.micro
+      KeyName: cfn-key1
+      
+      SecurityGroups:
+        - default
+        - !Ref SSHSecurityGroup
+
+  SSHSecurityGroup: # This is the second resource group
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows SSH connection towards the EC2
+      SecurityGroupIngress: 
+        - IpProtocol: tcp # this is a list, beacuse, I can add more protocols later.
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+          
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp: 0.0.0.0/0
+
+  MyElasticIP:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      InstanceId: !Ref DevEC2Instance
+    
+
+
+
+
+
+
+
+

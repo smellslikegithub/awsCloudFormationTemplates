@@ -1,0 +1,32 @@
+# Here I have added the HTTP connection rule in security group.
+# Also when wer are adding new rules to the SG, it will not replace the
+# instance.
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: Adding additionla rules to our security group
+Resources:
+  DevEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-016b213e65284e9c9
+      InstanceType: t2.micro
+      KeyName: cfn-key1
+
+      SecurityGroups:
+        - default
+        - !Ref SSHSecurityGroup
+
+  SSHSecurityGroup: # This is the second resource group
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows SSH connection towards the EC2
+      SecurityGroupIngress: 
+        - IpProtocol: tcp # this is a list, beacuse, I can add more protocols later.
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp: 0.0.0.0/0
+
