@@ -1,0 +1,33 @@
+# Here, I am going to create a mapping for AMIs based on regions.
+# In other words, an EC2 instance in a particular region will be assigned to have a specific AMI.
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Mappings:
+  AmiToRegionMap:
+    us-east-1:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-east-2:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-west-1:
+      x64: ami-0a63f96e85105c6d3 #Ubuntu
+      x64arm: ami-0f330b426f35ac7f4
+
+Parameters:
+  KeyValuePair:
+    Description: Key Value Pair list!
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+Description: "Creating a template based on an edge case scenario"
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !FindInMap
+        - AmiToRegionMap
+        - !Ref "AWS::Region"
+        - x64
+      InstanceType: "t2.micro" 
+      KeyName: !Ref KeyValuePair
