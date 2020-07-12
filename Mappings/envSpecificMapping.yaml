@@ -1,0 +1,54 @@
+# I will create EC2 instances based on the env
+# dev, preprod, prod.
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Mappings:
+  AmiToRegionMap:
+    us-east-1:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-east-2:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-west-1:
+      x64: ami-0a63f96e85105c6d3 #Ubuntu
+      x64arm: ami-0f330b426f35ac7f4
+  
+  EnvMapping:
+    dev:
+      InstanceType: t2.micro
+    prep-prod:
+      InstanceType: t2.micro
+    prod:
+      InstanceType: t2.small 
+
+Parameters:
+  KeyValuePair:
+    Description: Key Value Pair list!
+    Type: "AWS::EC2::KeyPair::KeyName"
+  
+  EnvironmentName:
+    Description: Select the environment!
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - pre-prod
+      - prod
+
+
+Description: "Creating a template based on an edge case scenario"
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !FindInMap
+        - AmiToRegionMap
+        - !Ref "AWS::Region"
+        - x64
+      InstanceType: !FindInMap
+        - EnvMapping
+        - !Ref EnvironmentName
+        - InstanceType
+      KeyName: !Ref KeyValuePair
