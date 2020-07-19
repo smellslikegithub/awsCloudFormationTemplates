@@ -1,7 +1,9 @@
 # Here I have added the HTTP connection rule in security group.
 # Also when wer are adding new rules to the SG, it will not replace the
 # instance.
-
+# When this yaml is used as a "Change-Set" to the existing stack instance
+# the EC2 instance will not be replaced and only the SG rules will 
+# be updated. 
 AWSTemplateFormatVersion: 2010-09-09
 Description: Adding additionla rules to our security group
 Resources:
@@ -29,4 +31,5 @@ Resources:
           FromPort: '8080'
           ToPort: '8080'
           CidrIp: 0.0.0.0/0
+          
 

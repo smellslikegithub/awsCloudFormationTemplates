@@ -1,0 +1,34 @@
+* Mappings matches a KEY to a corresponding set of named values.
+* For example, if someone wants to set values based on a region
+we can creat mappings by specifying KEYS as region names and values specifying something. 
+
+* Those Key and values can then be used by the intrinsic function "Fn::FindInMap"
+
+For example.
+
+Mappings:
+  Mapping01: # This is the resournce identifier/named
+    Key01: #Top Level keys # KEY NAME can be anything
+      Name: Val1 # Within Level Keys
+    Key01:
+      Name: Val2
+
+* The above template can be represented as a real example.
+
+Mappings:
+  RegionMapList:
+    us-east-1:
+      "HVM64": "ami-016b213e65284e9c9" # Key name could have been "AMI-ID" as well.
+    us-east-2:
+      "HVM64": "ami-someVersionNumber"
+
+
+#--------------------------------------------------------------
+
+Pseudo Parameters
+
+* These are params that are fixed in AWS. They can be used to refer names of params in AWS(Built-in). For example:
+
+=> AWS::Region gives the list of regions in AWS
+
+There are many more like this.

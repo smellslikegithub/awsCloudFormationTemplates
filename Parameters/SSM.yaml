@@ -1,5 +1,7 @@
-# Creating an additional parameter for instance type.
-
+# Create a parameter in AWS System Manager => Parameter Store
+# I have named the Parameter as "StandardInstance"
+# during ceration, when asked about instance, type the 
+# parameter name identifier as denoted in ASM. In this case "StandardInstance"
 AWSTemplateFormatVersion: 2010-09-09
 Description: AZ Param Demo
 
@@ -20,12 +22,8 @@ Parameters:
       - us-west-2
 
   MyInstanceType:
-    Description: Instance Types (t2.micro for Free Tier!)
-    Type: String
-    Default: t2.micro
-    AllowedValues:
-      - t2.micro
-      - t2.small
+    Description: Instance Type from SSM (t2.micro for Free Tier!)
+    Type: "AWS::SSM::Parameter::Value<String>"
 
 
 Resources:

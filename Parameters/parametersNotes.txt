@@ -1,0 +1,39 @@
+* Parameters allow us to input custom values to our template each time when we create or update the stack
+
+* Maximum 60 params in a CF template
+
+* Each param is given a logicalName(logical id) which must be alpha numeric and unique across the CF template
+
+* params must be declared and referenced within the same template
+
+Synatax example:
+
+Parameters:
+  ParameterLogicalId:
+  Type: DataType
+  ParameterProperty: value
+
+
+PARAMETER PROPERTIES:
+=> AllowedPattern
+=> AllowedValues
+=> ConstarintDescription
+=> Default
+=> Description
+=> MaxLength
+=> MaxValue
+=> MinLength
+=> MinValue
+=> NoEcho
+
+PARAMETER TYPES
+=> Type (Mandatory)
+  => String
+  => Number
+  => List<Number>
+  => CommaDelimitedList
+  => AWS Specific
+    => AWS::EC2::Instance::Id
+    => AWS::EC2::VPC::Id
+    => AWS::EC2::E::Id
+    => List<AWS::EC2::Subnet::Id>

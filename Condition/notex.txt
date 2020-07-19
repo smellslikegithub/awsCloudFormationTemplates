@@ -1,0 +1,26 @@
+* Creating conditions to create entities/resources
+* We can associate conditions with a property so that AWS CloudFormation only creates resources if the conditions are met
+* Setting property to a specific value if conditions are met.
+
+
+Syntax
+Conditions:
+  Logical ID:
+    Intrinsic Function
+
+
+* Conditions can be written in three places and are evaluated based on predefined input pr pseudo params
+  => resources 
+  => resource Properties
+  => Outputs
+
+* AWS checks the conditions during stack creation/update
+
+Example of Intrinsic Functions:
+
+=> Fn::And
+=> Fn::Equals
+=> Fn::if
+=> Fn::Not
+=> Fn::Or
+
