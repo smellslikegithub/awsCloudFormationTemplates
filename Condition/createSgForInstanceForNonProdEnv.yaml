@@ -1,0 +1,85 @@
+# Creating condition based Cloud Fomration Templates
+# if the ENV is dev-preprod, an elastic IP resource must be created
+# if the ENV is dev-preprod it will be assigned a SG
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Playing around with conditions in Cloud formation
+
+Mappings: #-----------Mappings Section ------------
+  AmiToRegionMap:
+    us-east-1:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-east-2:
+      x64: ami-016b213e65284e9c9
+      x64arm: ami-0ffd59b53e6797671
+    us-west-1:
+      x64: ami-0a63f96e85105c6d3 #Ubuntu
+      x64arm: ami-0f330b426f35ac7f4
+  
+  EnvMapping:
+    dev-preprod:
+      InstanceType: t2.micro
+    prod:
+      Instance: t2.small
+  
+Parameters:  #-----------Parameters Section ------------
+  EnvironmentName:
+    Description: Contains the list of ENV names.
+    Type: String
+    Default: dev-preprod
+    AllowedValues:
+      - dev-preprod
+      - prod
+  
+  KeyValuePair:
+    Description: List of Authenticat Key Names associated with the current account.
+    Type: "AWS::EC2::KeyPair::KeyName"
+
+Conditions:  #-----------Conditions Section ------------
+  CreateElasticIpForDevPreprod: !Equals [!Ref EnvironmentName, dev-preprod]
+  CreateNonProdSecurityGroup: !Equals [!Ref EnvironmentName, dev-preprod]
+
+
+
+Resources:
+
+  NonProdSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Condition: CreateNonProdSecurityGroup
+    Properties:
+      GroupDescription: Security Group for non production environments.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '0.0.0.0/0'
+
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp: 0.0.0.0/0
+
+  MyDevPreprodEip:
+    Type: "AWS::EC2::EIP"
+    Condition: CreateElasticIpForDevPreprod
+    Properties:
+      InstanceId: !Ref DevEC2Instance
+
+  DevEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !FindInMap
+        - AmiToRegionMap
+        - !Ref "AWS::Region" # Region Name
+        - x64
+      InstanceType: !FindInMap
+        - EnvMapping
+        - !Ref EnvironmentName
+        - InstanceType
+      KeyName: !Ref KeyValuePair
+      # The below line should be interpreted like this
+      # if CreateNonProdSecurityGroup exists/ has passed the condition on line 41
+      # Attach the SecurityGroups key with value returned by [!Ref NonProdSecurityGroup]
+      # else attach 'AWS::NoValue' to the SecurityGroups
+      SecurityGroups: !If [CreateNonProdSecurityGroup, [!Ref NonProdSecurityGroup], 'AWS::NoValue']
